@@ -1,0 +1,2 @@
+# clientAtNote
+Client side functionality
