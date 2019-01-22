@@ -1,12 +1,12 @@
 'use strict';
+const env = process.env.USER;
 
-
-class ToMongo{
-    constructor(tags, str){
-        this.tags = tags
-        this.str = str;
-    }
+class ToMongo {
+  constructor(tags, str) {
+    this.note = str;
+    this.user = env;
+    this.tags = [...tags];
+  }
 }
 
-
-module.exports =ToMongo;
+module.exports = ToMongo;
