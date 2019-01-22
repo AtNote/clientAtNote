@@ -4,7 +4,7 @@ const toMongo = require('../models/toMongoClass');
 
 let argv = process.argv.slice(2);
 
-let argString = argv.join(' ');
+// let argString = argv.join(' ');
 
 let commandsSet = new Set([])
 
