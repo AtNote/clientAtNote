@@ -4,7 +4,6 @@ const toMongo = require('../models/toMongoClass');
 
 let argv = process.argv.slice(2);
 
-// let argString = argv.join(' ');
 
 let commandsSet = new Set([])
 
@@ -41,7 +40,7 @@ argv.forEach( (idx)=>{
 //adds tags to set
 function addTagsToSet(arr, set){
 
-    console.log('called from addtags', arr);
+    // console.log('called from addtags', arr);
     arr.forEach( (word)=>{
         //chack if word has @ sign and is in command set
         if (word[0] ==='@'){
@@ -55,8 +54,18 @@ function addTagsToSet(arr, set){
     })
 
 }
+
+
 //turns argv array into a string
 function argvToString(arr){
+    //strip @ signs
+
+for (let i = 0; i<arr.length; i++){
+    if(arr[i][0]==='@'){
+        arr[i] = arr[i].slice(1);
+    }
+}
+    
     return arr.join(' ');
     
 }
@@ -65,8 +74,8 @@ function argvToString(arr){
 function newStuff(arr){
 
     let tagSet = new Set();
-
-   let str = argvToString(arr);
+    let str =argvToString(arr);
+   
 
    //adds tags to set from an array
 
