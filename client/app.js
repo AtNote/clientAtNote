@@ -40,8 +40,9 @@ function newStuff(arr) {
 
   return superagent
     .post(url)
-    .send(mongoObject) //mongoObject
+    .send(mongoObject)
     .then((res) => {
+      console.log(res.body._id);
       if (!res) {
         console.log('DID NOT SAVE');
       }
@@ -49,14 +50,23 @@ function newStuff(arr) {
     .catch(console.log('newStuff Error'));
 }
 
+
+//router.get('/api/notes/:key/:value', getAllNotes);
+//router.get('/api/notes/tags/<tag variable>', getAllNotes);
+//router.get('/api/notes/user/<user variable>', getAllNotes);
+//url+'/user/janderson'
+//https://at-note.herokuapp.com/api/notes
+
+
 function get(arr) {
   let mongoObject = formatObject(arr);
   console.log(mongoObject);
 
   return superagent
-    .get(url)
-    .query(mongoObject) //mongoObject
+    .get('https://at-note.herokuapp.com/api/notes/user/janderson')
+    // .query(mongoObject)
     .then(res => {
+      console.log(res.body.results);
       if (!res) {
         console.log('DID NOT SAVE');
       }
@@ -64,7 +74,23 @@ function get(arr) {
     .catch(console.log('Get error'));
 }
 function date() {}
-function last() {}
+
+//router.get('/api/notes/:key/:value', getAllNotes);
+function last(arr) {
+  let mongoObject = formatObject(arr);
+  console.log(mongoObject);
+
+  return superagent
+    .post(url) //add to url the key of user, and the value of saved id.
+    .send(mongoObject)
+    .then((res) => {
+      console.log(res.body._id);
+      if (!res) {
+        console.log('DID NOT SAVE');
+      }
+    })
+    .catch(console.log('newStuff Error'));
+}
 function today() {}
 function deleteStuff() {}
 function quit() {}
@@ -110,25 +136,6 @@ function argvToString(arr) {
   return arr.join(' ');
 }
 
-
 /*
 '{"note":"Hello","user":"Brent"}'
-
-{
-  tags: Set { 'science' },
-  note: 'science hi brent and siob',
-  user: 'janderson' }
 */
-
-// function addTagsToArr(arr) {
-//   let tagsArr = [];
-//   arr.forEach(word => {
-//     //chack if word has @ sign and is in command set
-//     if (word[0] === '@') {
-//       //checking if word is a reserve word
-//       if (!commandsSet.has(word)) {
-//         tagsArr.push(word.slice(1));
-//       }
-//     }
-//   });
-// }
