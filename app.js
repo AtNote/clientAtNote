@@ -8,7 +8,7 @@ const env = process.env.USER;
 //--------------------------------------------------------\\
 
 const storage = require('./models/presistant');
-console.log(storage[1]);
+// console.log(storage[1]);
 
 let argv = process.argv.slice(2);
 let commandsSet = new Set([]);
@@ -20,9 +20,8 @@ let commands = {
   '@date': date,
   '@last': last,
   '@today': today,
+  '@yesterday': yesterday,
   '@delete': deleteStuff,
-  '@secret': secret,
-  '@copy': copy,
   '@help': help,
 };
 
@@ -42,7 +41,7 @@ if (commands.hasOwnProperty(argv[0])) {
 //--------------------- COMMAND FUNCTIONS ---------------------\\
 function newStuff(arr) {
   let mongoObject = formatObject(arr);
-  // console.log(mongoObject);
+  console.log(mongoObject);
 
   return superagent
     .post(url)
@@ -55,14 +54,16 @@ function newStuff(arr) {
     })
     .catch(console.log('newStuff Error'));
 }
-
-function get(arr) {
+function get(arr) { 
+  //arr = argv
   let mongoObject = formatObject(arr);
   console.log(mongoObject);
   let concatUrl = url;
   if(arr[0]) {
     arr[0].slice(1);
-    concatUrl += `/tags/${arr[0]}`;
+    // concatUrl += `/tags/${process.env.USER}*/${arr[0]}`;
+    concatUrl += `/tags/${process.env.USER}*${arr[0]}`;
+    console.log('/////////',concatUrl);
   } else {
     concatUrl += `/user/${env}`;
   }
@@ -118,10 +119,13 @@ function deleteStuff(arr) {
     .catch();
 }
 
-function date() {}
+function date() {
+  let mongoObject = formatObject(arr);
+
+}
+
 function today() {}
-function secret() {}
-function copy() {}
+function yesterday() {}
 function help() {}
 
 //--------------------- HELPERS ---------------------\\
@@ -129,6 +133,10 @@ function help() {}
 // makes sure the first index of argv is a commmand
 function formatObject(arr) {
   let tagSet = new Set();
+  //add adte to the tag set
+
+
+  tagSet.add(process.env.USER + '*' +timeStamp());
   // adds tags to set from an array
   addTagsToSet(arr, tagSet);
   let str = argvToString(arr);
@@ -143,7 +151,9 @@ function addTagsToSet(arr, set) {
     if (word[0] === '@') {
       // checking if word is a reserve word
       if (!commandsSet.has(word)) {
-        set.add(word.slice(1));
+        let addWord = process.env.USER + '*' +word.slice(1);
+        console.log(addWord);
+        set.add(addWord);
       }
     }
   });
@@ -158,6 +168,17 @@ function argvToString(arr) {
     }
   }
   return arr.join(' ');
+}
+
+//getting by date
+function timeStamp() {
+  let months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+  let currentDate = new Date();
+  let date = currentDate.getDate();
+  let month = currentDate.getMonth();
+  let year = currentDate.getFullYear();
+
+  return `${months[month]}-${date}-${year}`;
 }
 
 // api/notes/:key/:value
