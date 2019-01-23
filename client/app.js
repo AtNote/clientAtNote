@@ -3,6 +3,7 @@
 const toMongo = require('../models/toMongoClass');
 const superagent = require('superagent');
 const url = 'https://at-note.herokuapp.com/api/notes';
+const env = process.env.USER;
 
 let argv = process.argv.slice(2);
 
@@ -61,10 +62,16 @@ function newStuff(arr) {
 function get(arr) {
   let mongoObject = formatObject(arr);
   console.log(mongoObject);
+  let concatUrl = url;
+    if(arr[0]) {
+      arr[0].slice(1);
+      concatUrl += `/tags/${arr[0]}`;
+    } else {
+      concatUrl += `/user/${env}`;
+    }
 
   return superagent
-    .get('https://at-note.herokuapp.com/api/notes/user/janderson')
-    // .query(mongoObject)
+    .get(concatUrl)
     .then(res => {
       console.log(res.body.results);
       if (!res) {
@@ -91,8 +98,31 @@ function last(arr) {
     })
     .catch(console.log('newStuff Error'));
 }
+
 function today() {}
-function deleteStuff() {}
+
+function deleteStuff(arr) {
+  let mongoObject = formatObject(arr);
+  console.log(mongoObject);
+  let concatUrl = url;
+    if(arr[0]) {
+      arr[0].slice(1);
+      concatUrl += `/tags/${arr[0]}`;
+    } else {
+      concatUrl += `/user/${env}`;
+    }
+console.log(concatUrl);
+  return superagent
+    .delete(concatUrl)
+    .then(res => {
+      console.log(res.body);
+      if (!res) {
+        console.log('DID NOT SAVE');
+      }
+    })
+    .catch(console.log('Get error'));
+}
+
 function quit() {}
 function secret() {}
 function copy() {}
