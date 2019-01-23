@@ -1,0 +1,28 @@
+{
+  "name": "atnote",
+  "version": "1.0.0",
+  "description": "Note taking application for Command Line",
+  "main": "app.js",
+"bin":{"@note": "./app.js"},
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AtNote/AtNote.git"
+  },
+  "keywords": [],
+  "author": "Siobahn, Jake, Jonathan, Brent",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AtNote/AtNote/issues"
+  },
+  "homepage": "https://github.com/AtNote/AtNote#readme",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "jest": "^23.6.0",
+    "superagent": "^4.1.0"
+  },
+  "devDependencies": {},
+"files":["models/"]
+}
