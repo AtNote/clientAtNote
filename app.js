@@ -5,6 +5,7 @@ const toMongo = require('./models/toMongoClass');
 const superagent = require('superagent');
 const url = 'https://at-note.herokuapp.com/api/notes';
 const env = process.env.USER;
+const writeFile = require('./models/edit-json.js');
 //--------------------------------------------------------\\
 
 const storage = require('./models/presistant');
@@ -48,22 +49,27 @@ function newStuff(arr) {
     .send(mongoObject)
     .then((res) => {
       console.log(res.body._id);
+      let body = [res.body._id];
+      writeFile(body);
+
       if (!res) {
         console.log('DID NOT SAVE');
       }
     })
     .catch(console.log('newStuff Error'));
 }
+
 function get(arr) { 
   //arr = argv
   let mongoObject = formatObject(arr);
   console.log(mongoObject);
+  console.log(arr.length);
   let concatUrl = url;
   if(arr[0]) {
     arr[0].slice(1);
     // concatUrl += `/tags/${process.env.USER}*/${arr[0]}`;
     concatUrl += `/tags/${process.env.USER}*${arr[0]}`;
-    console.log('/////////',concatUrl);
+    console.log('/////////', concatUrl);
   } else {
     concatUrl += `/user/${env}`;
   }
@@ -99,33 +105,85 @@ function deleteStuff(arr) {
   let mongoObject = formatObject(arr);
   //console.log(mongoObject);
 
+  //if arr has length delete tag else delete last
+  if(arr.length > 0) {
+    let concatUrl = url;
+    if(arr[0]) {
+      arr[0].slice(1);
+      concatUrl += `/tags/${process.env.USER}*${arr[0]}`;
+      console.log('this lkadshaKvj', concatUrl);
+    } else {
+      concatUrl += `/user/${env}`;
+    }
+    
+    console.log(concatUrl);
+    return superagent
+      .delete(concatUrl)
+      .then(res => {
+        // console.log(res.body);
+        if (!res) {
+          console.log('DID NOT SAVE');
+        }
+      })
+      .catch();
+  }
+    else {
+      let concatUrl = url;
+    if(!arr[0]) {
+      concatUrl += `/_id/${storage[0]}`;
+    } else {
+      concatUrl += `/user/${env}`;
+    }
+    
+    console.log(concatUrl);
+    return superagent
+      .delete(concatUrl)
+      .then(res => {
+        // console.log(res.body);
+        if (!res) {
+          console.log('DID NOT SAVE');
+        }
+      })
+      .catch();
+  }
+    } 
+  //get last 
+//  console.log(storage);
+  //delete last 
+
+function date(arr) {
+  //arr = argv
+  let mongoObject = formatObject(arr);
+  console.log(mongoObject);
   let concatUrl = url;
   if(arr[0]) {
     arr[0].slice(1);
-    concatUrl += `/tags/${arr[0]}`;
+    // concatUrl += `/tags/${process.env.USER}*/${arr[0]}`;
+    concatUrl += `/tags/${process.env.USER}*${arr[0]}`;
+    // console.log('/////////',concatUrl);
   } else {
     concatUrl += `/user/${env}`;
   }
 
-  //console.log(concatUrl);
   return superagent
-    .delete(concatUrl)
+    .get(concatUrl)
     .then(res => {
-      console.log(res.body);
+      console.log(res.body.results);
       if (!res) {
-        console.log('DID NOT SAVE');
+        console.log('Note did note save');
       }
     })
     .catch();
 }
 
-function date() {
-  let mongoObject = formatObject(arr);
+function today() {
+  
+}
+
+function yesterday() {
 
 }
 
-function today() {}
-function yesterday() {}
 function help() {}
 
 //--------------------- HELPERS ---------------------\\
@@ -181,6 +239,12 @@ function timeStamp() {
   return `${months[month]}-${date}-${year}`;
 }
 
+//getting last note 
+// function getLast(storageObj) { 
+//   return last;
+  
+// }
+// console.log(getLast());
 // api/notes/:key/:value
 // api/notes/tags/<tag variable>
 // api/notes/user/<user variable>
