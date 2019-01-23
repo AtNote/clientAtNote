@@ -8,8 +8,8 @@ function parseGet(arr) {
   arr.forEach(note => {
     noteArr.push(note.note);
     let tagString = '';
-    note.tags.forEach(tag => {
-      tagString += `@${tag}, `;
+    note.tags.forEach(tag => { //each tag
+      tagString += formatTags(tag);
     });
     tagsArr.push(tagString.slice(0, tagString.length-2)); //takes comma off last command
   });
@@ -27,11 +27,23 @@ function parseGet(arr) {
   console.log();
 }
 
+//formatTags
+function formatTags(string){
+  let regx = /[^*]+./;
+  string = string.replace(regx, '@');
+  string += ', ';
+  return string;
+  //user*bananas => bananas
+
+}
+
 function parseDelete(numDeleted) {
-  if (numDeleted!== 1) {
+  if (numDeleted > 1) {
     console.log(`${numDeleted} notes deleted`);
-  } else {
+  } else if(numDeleted ===1 ) {
     console.log(`${numDeleted} note deleted`);
+  } else {
+    console.log('No notes deleted');
   }
 }
 
