@@ -1,6 +1,6 @@
-'use strict';
+#!/usr/bin/env node
 
-const toMongo = require('../models/toMongoClass');
+const toMongo = require('./models/toMongoClass');
 const superagent = require('superagent');
 const url = 'https://at-note.herokuapp.com/api/notes';
 const env = process.env.USER;
