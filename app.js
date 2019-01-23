@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
+//--------------------- DEPENDANCIES ---------------------\\
 const toMongo = require('./models/toMongoClass');
 const superagent = require('superagent');
 const url = 'https://at-note.herokuapp.com/api/notes';
 const env = process.env.USER;
+//--------------------------------------------------------\\
 
 let argv = process.argv.slice(2);
-
 let commandsSet = new Set([]);
 
-//command object that holds available commands
+// command object that holds available commands
 let commands = {
   '@new': newStuff,
   '@get': get,
@@ -17,27 +18,28 @@ let commands = {
   '@last': last,
   '@today': today,
   '@delete': deleteStuff,
-  '@quit': quit,
   '@secret': secret,
   '@copy': copy,
   '@help': help,
 };
-//add commands to the command set
+
+// add commands to the command set
 for (let key in commands) {
   commandsSet.add(key);
 }
-// checking the command object for a match
 
+// check the command object for a match
 if (commands.hasOwnProperty(argv[0])) {
-  //searches commands object for a tag
+  // searches commands object for a tag
   commands[argv[0]](argv.slice(1));
 } else {
   console.log('not a command');
 }
-//
+
+//--------------------- COMMAND FUNCTIONS ---------------------\\
 function newStuff(arr) {
   let mongoObject = formatObject(arr);
-  console.log(mongoObject);
+  // console.log(mongoObject);
 
   return superagent
     .post(url)
@@ -51,44 +53,34 @@ function newStuff(arr) {
     .catch(console.log('newStuff Error'));
 }
 
-
-//router.get('/api/notes/:key/:value', getAllNotes);
-//router.get('/api/notes/tags/<tag variable>', getAllNotes);
-//router.get('/api/notes/user/<user variable>', getAllNotes);
-//url+'/user/janderson'
-//https://at-note.herokuapp.com/api/notes
-
-
 function get(arr) {
   let mongoObject = formatObject(arr);
   console.log(mongoObject);
   let concatUrl = url;
-    if(arr[0]) {
-      arr[0].slice(1);
-      concatUrl += `/tags/${arr[0]}`;
-    } else {
-      concatUrl += `/user/${env}`;
-    }
+  if(arr[0]) {
+    arr[0].slice(1);
+    concatUrl += `/tags/${arr[0]}`;
+  } else {
+    concatUrl += `/user/${env}`;
+  }
 
   return superagent
     .get(concatUrl)
     .then(res => {
       console.log(res.body.results);
       if (!res) {
-        console.log('DID NOT SAVE');
+        console.log('Note did note save');
       }
     })
-    .catch(console.log('Get error'));
+    .catch();
 }
-function date() {}
 
-//router.get('/api/notes/:key/:value', getAllNotes);
 function last(arr) {
   let mongoObject = formatObject(arr);
-  console.log(mongoObject);
+  //console.log(mongoObject);
 
   return superagent
-    .post(url) //add to url the key of user, and the value of saved id.
+    .post(url)
     .send(mongoObject)
     .then((res) => {
       console.log(res.body._id);
@@ -96,22 +88,22 @@ function last(arr) {
         console.log('DID NOT SAVE');
       }
     })
-    .catch(console.log('newStuff Error'));
+    .catch();
 }
-
-function today() {}
 
 function deleteStuff(arr) {
   let mongoObject = formatObject(arr);
-  console.log(mongoObject);
+  //console.log(mongoObject);
+
   let concatUrl = url;
-    if(arr[0]) {
-      arr[0].slice(1);
-      concatUrl += `/tags/${arr[0]}`;
-    } else {
-      concatUrl += `/user/${env}`;
-    }
-console.log(concatUrl);
+  if(arr[0]) {
+    arr[0].slice(1);
+    concatUrl += `/tags/${arr[0]}`;
+  } else {
+    concatUrl += `/user/${env}`;
+  }
+
+  //console.log(concatUrl);
   return superagent
     .delete(concatUrl)
     .then(res => {
@@ -120,34 +112,33 @@ console.log(concatUrl);
         console.log('DID NOT SAVE');
       }
     })
-    .catch(console.log('Get error'));
+    .catch();
 }
 
-function quit() {}
+function date() {}
+function today() {}
 function secret() {}
 function copy() {}
-function help(str) {
-  // console.log(str)
-}
+function help() {}
 
 //--------------------- HELPERS ---------------------\\
 
 // makes sure the first index of argv is a commmand
 function formatObject(arr) {
   let tagSet = new Set();
-  //adds tags to set from an array
+  // adds tags to set from an array
   addTagsToSet(arr, tagSet);
   let str = argvToString(arr);
-  //takes in a string
+  // takes in a string
   return new toMongo(tagSet, str);
 }
 
-//adds tags to set
+// adds tags to set
 function addTagsToSet(arr, set) {
   arr.forEach(word => {
-    //chack if word has @ sign and is in command set
+    // check if word has @ sign and is in command set
     if (word[0] === '@') {
-      //checking if word is a reserve word
+      // checking if word is a reserve word
       if (!commandsSet.has(word)) {
         set.add(word.slice(1));
       }
@@ -155,9 +146,9 @@ function addTagsToSet(arr, set) {
   });
 }
 
-//turns argv array into a string
+// turns argv array into a string
 function argvToString(arr) {
-  //strip @ signs
+  // strip @ signs
   for (let i = 0; i < arr.length; i++) {
     if (arr[i][0] === '@') {
       arr[i] = arr[i].slice(1);
@@ -166,6 +157,6 @@ function argvToString(arr) {
   return arr.join(' ');
 }
 
-/*
-'{"note":"Hello","user":"Brent"}'
-*/
+// api/notes/:key/:value
+// api/notes/tags/<tag variable>
+// api/notes/user/<user variable>
