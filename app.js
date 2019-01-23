@@ -7,6 +7,9 @@ const url = 'https://at-note.herokuapp.com/api/notes';
 const env = process.env.USER;
 //--------------------------------------------------------\\
 
+const storage = require('./models/presistant');
+console.log(storage[1]);
+
 let argv = process.argv.slice(2);
 let commandsSet = new Set([]);
 
