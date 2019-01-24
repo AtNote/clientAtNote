@@ -20,8 +20,6 @@ let commands = {
   '@get': get,
   '@date': date,
   '@last': last,
-  '@today': today,
-  '@yesterday': yesterday,
   '@delete': deleteStuff,
   '@help': help,
 };
@@ -174,14 +172,6 @@ function date(arr) {
       }
     })
     .catch();
-}
-
-function today() {
-  
-}
-
-function yesterday() {
-
 }
 
 function help() {}
