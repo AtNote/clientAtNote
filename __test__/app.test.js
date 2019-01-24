@@ -85,5 +85,13 @@ it('should populate a set with a a username salt if the word has an "@" and it i
 
 
 })
+describe('newStuff should take in an array and make a post to mongo', ()=>{
+    it('should take in an array of strings and retrun a an object with a note property', ()=>{
 
+        let arr =['@command', '@tag', '@anothertag', 'here', 'is', 'some', 'stuff'];
+
+        let format = app.formatObject(arr);
+        expect(format.note).toBeTruthy();
+    })
+})
 })
