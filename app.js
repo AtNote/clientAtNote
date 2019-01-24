@@ -6,10 +6,12 @@ const superagent = require('superagent');
 const url = 'https://at-note.herokuapp.com/api/notes';
 const env = process.env.USER;
 const writeFile = require('./models/edit-json.js');
+const outputParser = require('./outputParser');
+const parseGet = outputParser.parseGet;
+const parseDelete = outputParser.parseDelete;
 //--------------------------------------------------------\\
 
 const storage = require('./models/presistant');
-// console.log(storage[1]);
 
 let argv = process.argv.slice(2);
 let commandsSet = new Set([]);
@@ -17,7 +19,7 @@ let commandsSet = new Set([]);
 // command object that holds available commands
 let commands = {
   '@new': newStuff,
-  '@get': get,
+  '@show': get,
   '@date': date,
   '@last': last,
   '@today': today,
@@ -42,34 +44,27 @@ if (commands.hasOwnProperty(argv[0])) {
 //--------------------- COMMAND FUNCTIONS ---------------------\\
 function newStuff(arr) {
   let mongoObject = formatObject(arr);
-  console.log(mongoObject);
+  // console.log(mongoObject);
 
   return superagent
     .post(url)
     .send(mongoObject)
     .then((res) => {
-      console.log(res.body._id);
       let body = [res.body._id];
       writeFile(body);
-
       if (!res) {
-        console.log('DID NOT SAVE');
+        console.log('Note did NOT save');
       }
     })
-    .catch(console.log('newStuff Error'));
+    .catch();
 }
 
 function get(arr) { 
-  //arr = argv
   let mongoObject = formatObject(arr);
-  console.log(mongoObject);
-  console.log(arr.length);
   let concatUrl = url;
   if(arr[0]) {
     arr[0].slice(1);
-    // concatUrl += `/tags/${process.env.USER}*/${arr[0]}`;
     concatUrl += `/tags/${process.env.USER}*${arr[0]}`;
-    console.log('/////////', concatUrl);
   } else {
     concatUrl += `/user/${env}`;
   }
@@ -77,9 +72,9 @@ function get(arr) {
   return superagent
     .get(concatUrl)
     .then(res => {
-      console.log(res.body.results);
+      parseGet(res.body.results);
       if (!res) {
-        console.log('Note did note save');
+        console.log('Note did NOTE save');
       }
     })
     .catch();
@@ -93,7 +88,7 @@ function last(arr) {
     .post(url)
     .send(mongoObject)
     .then((res) => {
-      console.log(res.body._id);
+      parseGet(res.body.results)
       if (!res) {
         console.log('DID NOT SAVE');
       }
@@ -111,56 +106,46 @@ function deleteStuff(arr) {
     if(arr[0]) {
       arr[0].slice(1);
       concatUrl += `/tags/${process.env.USER}*${arr[0]}`;
-      console.log('this lkadshaKvj', concatUrl);
     } else {
       concatUrl += `/user/${env}`;
     }
     
-    console.log(concatUrl);
     return superagent
       .delete(concatUrl)
       .then(res => {
-        // console.log(res.body);
+        parseDelete(res.body.n);
         if (!res) {
           console.log('DID NOT SAVE');
         }
       })
       .catch();
   }
-    else {
-      let concatUrl = url;
+  else {
+    let concatUrl = url;
     if(!arr[0]) {
       concatUrl += `/_id/${storage[0]}`;
     } else {
       concatUrl += `/user/${env}`;
     }
     
-    console.log(concatUrl);
     return superagent
       .delete(concatUrl)
       .then(res => {
-        // console.log(res.body);
+        parseDelete(res.body.n);
         if (!res) {
           console.log('DID NOT SAVE');
         }
       })
       .catch();
   }
-    } 
-  //get last 
-//  console.log(storage);
-  //delete last 
+} 
 
 function date(arr) {
-  //arr = argv
   let mongoObject = formatObject(arr);
-  console.log(mongoObject);
   let concatUrl = url;
   if(arr[0]) {
     arr[0].slice(1);
-    // concatUrl += `/tags/${process.env.USER}*/${arr[0]}`;
     concatUrl += `/tags/${process.env.USER}*${arr[0]}`;
-    // console.log('/////////',concatUrl);
   } else {
     concatUrl += `/user/${env}`;
   }
@@ -168,7 +153,7 @@ function date(arr) {
   return superagent
     .get(concatUrl)
     .then(res => {
-      console.log(res.body.results);
+      parseGet(res.body.results);
       if (!res) {
         console.log('Note did note save');
       }
@@ -193,7 +178,6 @@ function formatObject(arr) {
   let tagSet = new Set();
   //add adte to the tag set
 
-
   tagSet.add(process.env.USER + '*' +timeStamp());
   // adds tags to set from an array
   addTagsToSet(arr, tagSet);
@@ -210,7 +194,6 @@ function addTagsToSet(arr, set) {
       // checking if word is a reserve word
       if (!commandsSet.has(word)) {
         let addWord = process.env.USER + '*' +word.slice(1);
-        console.log(addWord);
         set.add(addWord);
       }
     }
@@ -238,13 +221,3 @@ function timeStamp() {
 
   return `${months[month]}-${date}-${year}`;
 }
-
-//getting last note 
-// function getLast(storageObj) { 
-//   return last;
-  
-// }
-// console.log(getLast());
-// api/notes/:key/:value
-// api/notes/tags/<tag variable>
-// api/notes/user/<user variable>

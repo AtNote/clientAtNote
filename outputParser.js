@@ -20,11 +20,14 @@ function parseGet(arr) {
   let FgBlue = '\x1b[34m%s\x1b[0m';
 
   // prints arrays
-  for (let i = 0; i < noteArr.length; i++) {
-    console.log(noteArr[i]);
-    console.log(FgGreen, tagsArr[i]);
+  if (arr.length > 0){
+    for (let i = 0; i < noteArr.length; i++) {
+      console.log(noteArr[i]);
+      console.log(FgGreen, tagsArr[i]);
+    }
+  } else {
+    console.log('No notes found');
   }
-  console.log();
 }
 
 //formatTags
