@@ -1,9 +1,11 @@
 {
   "name": "atnote",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Note taking application for Command Line",
   "main": "app.js",
-"bin":{"@note": "./app.js"},
+  "bin": {
+    "@note": "./app.js"
+  },
   "scripts": {
     "test": "jest --verbose"
   },
@@ -24,5 +26,7 @@
     "superagent": "^4.1.0"
   },
   "devDependencies": {},
-"files":["models/"]
+  "files": [
+    "models/"
+  ]
 }
