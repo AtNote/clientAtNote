@@ -19,13 +19,13 @@ let commandsSet = new Set([]);
 // command object that holds available commands
 let commands = {
   '@new': newStuff,
-  '@show': get,
+  '@showall': showall,
+  '@showlast': showlast,
+  '@show': show,
   '@date': date,
-  '@last': last,
-  '@today': today,
-  '@yesterday': yesterday,
   '@delete': deleteStuff,
-  '@help': help,
+  '@deleteall': deleteall,
+  '--help': help,
 };
 
 // add commands to the command set
@@ -59,7 +59,7 @@ function newStuff(arr) {
     .catch();
 }
 
-function get(arr) { 
+function showall(arr) { 
   let mongoObject = formatObject(arr);
   let concatUrl = url;
   if(arr[0]) {
@@ -80,15 +80,18 @@ function get(arr) {
     .catch();
 }
 
-function last(arr) {
+function showlast(arr) {
   let mongoObject = formatObject(arr);
   //console.log(mongoObject);
-
+  let newUrl = 'https://at-note.herokuapp.com/api/notes/_id' +  `/${storage[0]}`;
+  console.log(newUrl);
+      
   return superagent
-    .post(url)
+    .get(newUrl)
     .send(mongoObject)
     .then((res) => {
       parseGet(res.body.results)
+      console.log(res.body.results)
       if (!res) {
         console.log('DID NOT SAVE');
       }
@@ -96,11 +99,20 @@ function last(arr) {
     .catch();
 }
 
+function show(arr) { 
+  let mongoObject = formatObject(arr);
+  let concatUrl = url;
+  //if argv empty then show last note 
+  console.log(arr);
+  if(arr.length === 0){
+    showlast(arr);
+  } else {
+    showall(arr);
+  }
+}
+
 function deleteStuff(arr) {
   let mongoObject = formatObject(arr);
-  //console.log(mongoObject);
-
-  //if arr has length delete tag else delete last
   if(arr.length > 0) {
     let concatUrl = url;
     if(arr[0]) {
@@ -140,6 +152,21 @@ function deleteStuff(arr) {
   }
 } 
 
+function deleteall(arr) {
+  let mongoObject = formatObject(arr);
+  let concatUrl = url;
+  concatUrl += `/user/${env}`;
+  return superagent
+      .delete(concatUrl)
+      .then(res => {
+        parseDelete(res.body.n);
+        if (!res) {
+          console.log('DID NOT SAVE');
+        }
+      })
+      .catch();
+}
+
 function date(arr) {
   let mongoObject = formatObject(arr);
   let concatUrl = url;
@@ -161,15 +188,25 @@ function date(arr) {
     .catch();
 }
 
-function today() {
-  
+function help() {
+  let helpString = `
+                    @note will start your npm package
+                    @note @new 'your note' 
+                    @note @showall
+                    @note @showlast
+                    @note @show <tag>
+                    @note @date mm-dd-yyyy
+                    @note @delete <tag>
+                    @note @deleteall
+                    @note @delete`;
+
+  let textObj = [{ tags: [],
+  _id: '',
+  note: helpString,
+  user: '',
+  __v: 0 }];
+  parseGet(textObj);
 }
-
-function yesterday() {
-
-}
-
-function help() {}
 
 //--------------------- HELPERS ---------------------\\
 
