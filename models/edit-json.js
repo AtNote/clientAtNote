@@ -1,39 +1,36 @@
 'use strict';
 const fs = require('fs');
 
-
-//turns set into an array
-// let newSet = [1234,2324,234324,123,345];
-
-
-//holds data that will go into file
+/**
+ *
+ * Function takes in a new set that is an 
+ * object. Holds data that will go in to 
+ * file. 
+ * @param {Set} newSet turns set into an array
+ */
 function writeFile(newSet) {
-    // let toFile = [];
-    // for(let i =0; i<newSet.length; i++){
-    //     toFile.push(`"${i}":"${newSet[i]}"`);
-    //     toFile.push()
-
-    // }
-
-    // let nameStr = `{${toFile}}`
-
     let writeContent=`'use strict';
     let dataObject = ["${newSet}"];
     module.exports = dataObject; `
 
-    // console.log(writeContent)
-
+    /**
+     *
+     * Function runs within another function 
+     * and takes in a string. Uses a buffer to
+     * wrote to a file
+     * @param {string} str
+     * @returns the file that the buffer is writting to
+     */
     function buffAppend(str){
         var buf = Buffer.alloc(str.length);
         buf.fill(str);
         return str;
     }
 
-
     fs.writeFile('./models/stash.js', buffAppend(writeContent), function (err) {
+
         if (err) throw err;
     })
-
-} //end function 
+} 
 
 module.exports = writeFile;
