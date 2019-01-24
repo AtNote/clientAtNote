@@ -26,7 +26,7 @@ function writeFile(newSet) {
         buf.fill(str);
         return str;
     }
-    fs.writeFile('./models/presistant.js', buffAppend(writeContent), function (err) {
+    fs.writeFile('./models/stash.js', buffAppend(writeContent), function (err) {
         if (err) throw err;
     })
 } 
