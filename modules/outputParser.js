@@ -51,7 +51,7 @@ function parseDelete(numDeleted) {
 }
 
 
-module.exports = {parseGet, parseDelete};
+module.exports = {parseGet, parseDelete, formatTags};
 
 
 
