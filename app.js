@@ -71,12 +71,12 @@ function get(arr) {
   if(arr[0]) {
     arr[0].slice(1);
     
+    console.log(concatUrl);
    for(let i =0; i<arr.length; i++){
+    
     urlArr.push(concatUrl += `/tags/${process.env.USER}*${arr[i]}`)
-    console.log(concatUrl += `/tags/${process.env.USER}*${arr[i]}`)
+    concatUrl = url;
    }
-
-   console.log('urllength',urlArr.length);
   } 
 else {
     concatUrl += `/user/${env}`;
@@ -89,7 +89,9 @@ else {
   // console.log(promiseArr);
   Promise.all(promiseArr)
   .then(res=>{
-    console.log('res',res);
+  let x =res[0].body.results[0];
+  console.log(x);
+
   })
   .catch(console.log('error'))
 
