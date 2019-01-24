@@ -4,7 +4,7 @@ const fs = require('fs');
 /**
  *
  * Function takes in a new set that is an 
- * object. Holds data that will go in to 
+ * array. Holds data that will go into 
  * file. 
  * @param {Set} newSet turns set into an array
  */
@@ -17,7 +17,7 @@ function writeFile(newSet) {
      *
      * Function runs within another function 
      * and takes in a string. Uses a buffer to
-     * wrote to a file
+     * write to a file
      * @param {string} str
      * @returns the file that the buffer is writting to
      */
