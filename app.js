@@ -9,12 +9,16 @@ const writeFile = require('./models/edit-json.js');
 const outputParser = require('./outputParser');
 const parseGet = outputParser.parseGet;
 const parseDelete = outputParser.parseDelete;
+
 //--------------------------------------------------------\\
 
 const storage = require('./models/presistant');
 
+
+
 let argv = process.argv.slice(2);
 let commandsSet = new Set([]);
+// writeFile(['121','123','345']);  this is working
 
 // command object that holds available commands
 let commands = {
@@ -26,12 +30,12 @@ let commands = {
   '@help': help,
 };
 
-// add commands to the command set
+// adds all the commands to the command set
 for (let key in commands) {
   commandsSet.add(key);
 }
 
-// check the command object for a match
+// if commands has a key of argv[0] pass remainder of argv into the function
 if (commands.hasOwnProperty(argv[0])) {
   // searches commands object for a tag
   commands[argv[0]](argv.slice(1));
@@ -41,14 +45,14 @@ if (commands.hasOwnProperty(argv[0])) {
 
 //--------------------- COMMAND FUNCTIONS ---------------------\\
 function newStuff(arr) {
-  let mongoObject = formatObject(arr);
+  let mongoObject = formatObject(arr);//console.log purposes only
   // console.log(mongoObject);
 
   return superagent
     .post(url)
     .send(mongoObject)
     .then((res) => {
-      let body = [res.body._id];
+      let body = [{"0":"res.body._id"}];
       writeFile(body);
       if (!res) {
         console.log('Note did NOT save');
@@ -58,30 +62,45 @@ function newStuff(arr) {
 }
 
 function get(arr) { 
-  let mongoObject = formatObject(arr);
+  let mongoObject = formatObject(arr);//for console.log purposes?
+  let urlArr=[];
+  let promiseArr = [];
+
   let concatUrl = url;
+
   if(arr[0]) {
     arr[0].slice(1);
-    concatUrl += `/tags/${process.env.USER}*${arr[0]}`;
-  } else {
+    
+   for(let i =0; i<arr.length; i++){
+    urlArr.push(concatUrl += `/tags/${process.env.USER}*${arr[i]}`)
+    console.log(concatUrl += `/tags/${process.env.USER}*${arr[i]}`)
+   }
+
+   console.log('urllength',urlArr.length);
+  } 
+else {
     concatUrl += `/user/${env}`;
   }
+//
+  urlArr.forEach( url=>{
+   promiseArr.push(superagent.get(url))
 
-  return superagent
-    .get(concatUrl)
-    .then(res => {
-      parseGet(res.body.results);
-      if (!res) {
-        console.log('Note did NOTE save');
-      }
-    })
-    .catch();
+  })
+  // console.log(promiseArr);
+  Promise.all(promiseArr)
+  .then(res=>{
+    console.log('res',res);
+  })
+  .catch(console.log('error'))
+
 }
 
 function last(arr) {
-  let mongoObject = formatObject(arr);
+  let mongoObject = formatObject(arr);//for console.log purposes?
   //console.log(mongoObject);
-  let newUrl = 'https://at-note.herokuapp.com/api/notes/_id' +  `/${storage[0]}`;
+  // let newUrl = 'https://at-note.herokuapp.com/api/notes/_id' +  `/${storage[0]}`;//was this
+
+  let newUrl = 'https://at-note.herokuapp.com/api/notes/_id' +  `/${storage[0][0]}`;//this works
   console.log(newUrl);
       
   return superagent
@@ -97,7 +116,7 @@ function last(arr) {
 }
 
 function deleteStuff(arr) {
-  let mongoObject = formatObject(arr);
+  let mongoObject = formatObject(arr);//for console.log purposes?
   //console.log(mongoObject);
 
   //if arr has length delete tag else delete last
@@ -141,7 +160,7 @@ function deleteStuff(arr) {
 } 
 
 function date(arr) {
-  let mongoObject = formatObject(arr);
+  let mongoObject = formatObject(arr);//for console.log purposes?
   let concatUrl = url;
   if(arr[0]) {
     arr[0].slice(1);
@@ -168,11 +187,14 @@ function help() {}
 // makes sure the first index of argv is a commmand
 function formatObject(arr) {
   let tagSet = new Set();
-  //add adte to the tag set
-
+  
+  //add date to the tag set
   tagSet.add(process.env.USER + '*' +timeStamp());
+
   // adds tags to set from an array
   addTagsToSet(arr, tagSet);
+
+  //makes the actual note by removing @ and putting argv to a string
   let str = argvToString(arr);
   // takes in a string
   return new toMongo(tagSet, str);
@@ -183,7 +205,7 @@ function addTagsToSet(arr, set) {
   arr.forEach(word => {
     // check if word has @ sign and is in command set
     if (word[0] === '@') {
-      // checking if word is a reserve word
+      // checking if word is a reserve word if it is not a reserve word add to tag array.
       if (!commandsSet.has(word)) {
         let addWord = process.env.USER + '*' +word.slice(1);
         set.add(addWord);
