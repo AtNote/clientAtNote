@@ -1,6 +1,6 @@
 {
   "name": "atnote",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Note taking application for Command Line",
   "main": "app.js",
   "bin": {
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/AtNote/AtNote#readme",
   "dependencies": {
     "dotenv": "^6.2.0",
-    "jest": "^23.6.0",  
+    "jest": "^23.6.0",
     "superagent": "^4.1.0"
   },
   "devDependencies": {}
