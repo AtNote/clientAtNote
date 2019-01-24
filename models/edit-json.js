@@ -30,7 +30,7 @@ function writeFile(newSet) {
     }
 
 
-    fs.writeFile('./models/presistant.js', buffAppend(writeContent), function (err) {
+    fs.writeFile('./models/stash.js', buffAppend(writeContent), function (err) {
         if (err) throw err;
     })
 

@@ -11,7 +11,7 @@ const parseGet = outputParser.parseGet;
 const parseDelete = outputParser.parseDelete;
 //--------------------------------------------------------\\
 
-const storage = require('./models/presistant');
+const storage = require('./models/stash');
 
 let argv = process.argv.slice(2);
 let commandsSet = new Set([]);
@@ -89,6 +89,7 @@ function showall(arr) {
   return superagent
     .get(concatUrl)
     .then(res => {
+      // console.log(res.body.results);
       parseGet(res.body.results);
       if (!res) {
         console.log('Note did NOTE save');
@@ -183,7 +184,7 @@ function deleteStuff(arr) {
     } else {
       concatUrl += `/user/${env}`;
     }
-    
+
     return superagent
       .delete(concatUrl)
       .then(res => {
