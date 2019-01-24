@@ -27,6 +27,7 @@
   },
   "devDependencies": {},
   "files": [
-    "models/"
+    "models/",
+    "modules/"
   ]
 }
