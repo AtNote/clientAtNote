@@ -42,6 +42,14 @@ if (commands.hasOwnProperty(argv[0])) {
 }
 
 //--------------------- COMMAND FUNCTIONS ---------------------\\
+/**
+ *
+ * Function that takes in an array and formats
+ * it into a JSON object. Executes a superagent call
+ * and will to post object to mongo database. 
+ * @param {Array} arr Array of user input from CLI
+ * @returns JSON object and 200 status code 
+ */
 function newStuff(arr) {
   let mongoObject = formatObject(arr);
   // console.log(mongoObject);
@@ -59,6 +67,15 @@ function newStuff(arr) {
     .catch();
 }
 
+/**
+ *
+ *Function that takes in an array and formats
+ * it into a JSON object. Executes a superagent call 
+ * and will post object to mongo. This is going to show you all
+ * off the notes that you have created.
+ * @param {Array} arr Array of user input from CLI
+ * @returns JSON object and 200 status code 
+ */
 function showall(arr) { 
   let mongoObject = formatObject(arr);
   let concatUrl = url;
@@ -80,6 +97,15 @@ function showall(arr) {
     .catch();
 }
 
+/**
+ *
+ * Function that takes in an array and formats
+ * it into a JSON object. Executes a superagent call
+ * and will post object to mongo. This is going to allow 
+ * you to view the last note that you have saved.
+ * @param {Array} arr Array of user input from CLI
+ * @returns JSON object and 200 status code 
+ */
 function showlast(arr) {
   let mongoObject = formatObject(arr);
   //console.log(mongoObject);
@@ -99,10 +125,17 @@ function showlast(arr) {
     .catch();
 }
 
+/**
+ *
+ * Function that takes in an array and formats
+ * it into a JSON object. Checks to see if you have 
+ * notes saved, if no then it will show you the last note
+ * else it will show you all of your notes. 
+ * @param {Array} arr Array of user input from CLI
+ */
 function show(arr) { 
   let mongoObject = formatObject(arr);
   let concatUrl = url;
-  //if argv empty then show last note 
   console.log(arr);
   if(arr.length === 0){
     showlast(arr);
@@ -111,6 +144,16 @@ function show(arr) {
   }
 }
 
+/**
+ *
+ * Function that takes in an array and formats 
+ * it into a JSON object. Executes a superagent call
+ * and will post object to mongo. This allows you to 
+ * delete the last not that yoou had saved. Or if you 
+ * include a tag it will delete all notes that contian that tag.
+ * @param {Array} arr Array of user input from CLI
+ * @returns JSON object and 200 status code 
+ */
 function deleteStuff(arr) {
   let mongoObject = formatObject(arr);
   if(arr.length > 0) {
@@ -152,6 +195,15 @@ function deleteStuff(arr) {
   }
 } 
 
+/**
+ *
+ * Function that takes in array and formats
+ * it into a JSON object. Executes a superagent call
+ * and will post object to mongo. This will allow you 
+ * to competely clear out your notes by deleting them all. 
+ * @param {Array} arr Array of user input from CLI
+ * @returns JSON object and 200 status code
+ */
 function deleteall(arr) {
   let mongoObject = formatObject(arr);
   let concatUrl = url;
@@ -167,6 +219,16 @@ function deleteall(arr) {
       .catch();
 }
 
+/**
+ *
+ * Function that takes in array and formats
+ * it into and JSON object. Executes a superagent call
+ * and will post object to mongo. This allows you to 
+ * insert a specifc date so you are able to view notes
+ * taken on that date. 
+ * @param {Array} arr Array of user input from CLI
+ * @returns JSON objcet and 200 status code
+ */
 function date(arr) {
   let mongoObject = formatObject(arr);
   let concatUrl = url;
@@ -188,6 +250,12 @@ function date(arr) {
     .catch();
 }
 
+/**
+ * 
+ * Function that helps you view 
+ * commands that are available within
+ * the package. 
+ */
 function help() {
   let helpString = `
                     @note will start your npm package
@@ -211,6 +279,12 @@ function help() {
 //--------------------- HELPERS ---------------------\\
 
 // makes sure the first index of argv is a commmand
+/**
+ *
+ *
+ * @param {Array} arr Array of user input from CLI
+ * @returns 
+ */
 function formatObject(arr) {
   let tagSet = new Set();
   //add adte to the tag set
@@ -224,6 +298,12 @@ function formatObject(arr) {
 }
 
 // adds tags to set
+/**
+ *
+ *
+ * @param {Array} arr Array of user input from CLI
+ * @param {*} set
+ */
 function addTagsToSet(arr, set) {
   arr.forEach(word => {
     // check if word has @ sign and is in command set
@@ -238,6 +318,12 @@ function addTagsToSet(arr, set) {
 }
 
 // turns argv array into a string
+/**
+ *
+ *
+ * @param {Array} arr Array of user input from CLI
+ * @returns
+ */
 function argvToString(arr) {
   // strip @ signs
   for (let i = 0; i < arr.length; i++) {
@@ -249,6 +335,11 @@ function argvToString(arr) {
 }
 
 //getting by date
+/**
+ *
+ *
+ * @returns
+ */
 function timeStamp() {
   let months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
   let currentDate = new Date();
