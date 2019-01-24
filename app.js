@@ -81,9 +81,11 @@ function get(arr) {
 function last(arr) {
   let mongoObject = formatObject(arr);
   //console.log(mongoObject);
-
+  let newUrl = 'https://at-note.herokuapp.com/api/notes/_id' +  `/${storage[0]}`;
+  console.log(newUrl);
+      
   return superagent
-    .post(url)
+    .get(newUrl)
     .send(mongoObject)
     .then((res) => {
       parseGet(res.body.results)
