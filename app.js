@@ -281,9 +281,11 @@ function help() {
 // makes sure the first index of argv is a commmand
 /**
  *
- *
+ * Function is used to format the arr into 
+ * a JSON object. Create a set that will be 
+ * the tags set in your notes. 
  * @param {Array} arr Array of user input from CLI
- * @returns 
+ * @returns string with tags 
  */
 function formatObject(arr) {
   let tagSet = new Set();
@@ -300,9 +302,12 @@ function formatObject(arr) {
 // adds tags to set
 /**
  *
- *
+ * Function that takes in an array and a set. 
+ * Checking for the @ and recoginize 
+ * it as a tag and include it in the set of all 
+ * notes that include that tag. 
  * @param {Array} arr Array of user input from CLI
- * @param {*} set
+ * @param {Set} set Set of tags of user input from CLI
  */
 function addTagsToSet(arr, set) {
   arr.forEach(word => {
@@ -320,9 +325,11 @@ function addTagsToSet(arr, set) {
 // turns argv array into a string
 /**
  *
- *
+ * Function that takes in an array and will 
+ * convert an argument into a string. This is 
+ * going to remove all @ 
  * @param {Array} arr Array of user input from CLI
- * @returns
+ * @returns string
  */
 function argvToString(arr) {
   // strip @ signs
@@ -337,8 +344,9 @@ function argvToString(arr) {
 //getting by date
 /**
  *
- *
- * @returns
+ * Function that will take in a date and then
+ * format it into the required format specified.
+ * @returns the date in the correct format 
  */
 function timeStamp() {
   let months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
