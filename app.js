@@ -6,7 +6,7 @@ const superagent = require('superagent');
 const url = 'https://at-note.herokuapp.com/api/notes';
 const env = process.env.USER;
 const writeFile = require('./models/edit-json.js');
-const outputParser = require('./outputParser');
+const outputParser = require('./modules/outputParser.js');
 const parseGet = outputParser.parseGet;
 const parseDelete = outputParser.parseDelete;
 //--------------------------------------------------------\\
@@ -110,14 +110,14 @@ function showlast(arr) {
   let mongoObject = formatObject(arr);
   //console.log(mongoObject);
   let newUrl = 'https://at-note.herokuapp.com/api/notes/_id' +  `/${storage[0]}`;
-  console.log(newUrl);
+  // console.log(newUrl);
       
   return superagent
     .get(newUrl)
     .send(mongoObject)
     .then((res) => {
       parseGet(res.body.results)
-      console.log(res.body.results)
+      // console.log(res.body.results)
       if (!res) {
         console.log('DID NOT SAVE');
       }
@@ -136,7 +136,8 @@ function showlast(arr) {
 function show(arr) { 
   let mongoObject = formatObject(arr);
   let concatUrl = url;
-  console.log(arr);
+  //if argv empty then show last note 
+  // console.log(arr);
   if(arr.length === 0){
     showlast(arr);
   } else {
