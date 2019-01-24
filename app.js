@@ -11,7 +11,7 @@ const parseGet = outputParser.parseGet;
 const parseDelete = outputParser.parseDelete;
 //--------------------------------------------------------\\
 
-const storage = require('./models/presistant');
+const storage = require('./models/stash.js');
 
 let argv = process.argv.slice(2);
 let commandsSet = new Set([]);
