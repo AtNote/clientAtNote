@@ -1,6 +1,6 @@
 {
   "source": {
-    "include" : ["./models", "./modules"]
+    "include" : ["./models", "./modules", "app.js"]
   },
   "opts": {
     "destination": "./docs/",
