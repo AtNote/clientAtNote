@@ -8,17 +8,16 @@ const fs = require('fs');
 
 //holds data that will go into file
 function writeFile(newSet) {
-    // let toFile = [];
-    // for(let i =0; i<newSet.length; i++){
-    //     toFile.push(`"${i}":"${newSet[i]}"`);
-    //     toFile.push()
+    let toFile = [];
+    for(let i =0; i<newSet.length; i++){
+        toFile.push(`{"${i}":"${newSet[i]}"}`);
 
-    // }
+    }
 
     // let nameStr = `{${toFile}}`
 
     let writeContent=`'use strict';
-    let dataObject = ["${newSet}"];
+    let dataObject = [${toFile}];
     module.exports = dataObject; `
 
     // console.log(writeContent)
