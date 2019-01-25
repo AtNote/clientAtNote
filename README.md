@@ -64,7 +64,7 @@ This was a npm package that was created to help users take notes while they are 
     * This is going to start the package
 * Follow the above feature commands to start your note taking
   
-#### Tests
+#### Tests Made
 * How do you run tests?
     * run the command `npm test` in your terminal 
 * What assertions were made?
