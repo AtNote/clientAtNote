@@ -1,10 +1,6 @@
 {
   "name": "atnote",
-<<<<<<< HEAD
-  "version": "1.0.9",
-=======
   "version": "1.0.11",
->>>>>>> aea1e3dea18ecde917fcc14c8ab6c68ab546dbfd
   "description": "Note taking application for Command Line",
   "main": "app.js",
   "bin": {
