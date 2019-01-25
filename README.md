@@ -3,7 +3,7 @@
 ### Authors & Acknowledgements: Siobhan Niess, Jonathan DiQuattro, Brent Woodward, and Jacob Anderson
 
 ### About the AtNote
-This was a npm package that was created to help users take notes while they are in their termial and writing code as well. Users are able to quickly takes notes as they 
+This was a npm package that was created to help users take notes while they are in their termial with ease. Allows users to multitask between note taking and writing code in a non-intrustive process. This si also customizable for each user.
 
 ### Download & Installation
 * `npm i -g atnote`
@@ -44,18 +44,19 @@ This was a npm package that was created to help users take notes while they are 
 
 ### Modules
 #### `edit-json.js`
-    * This writes a file 
+    * This writes a file and takes in a new Set that turns it into an array. Also to establish a file path that was going to work on everyones computer.  
 #### `stash.js`
-    * This holds the username 
+    * This writes to the file after the last `note` was made and saves the id connected with it. This makes it so you are able to pull down the last `note` that you made. 
 #### `toMongoClass.js`
-    * This 
+    * This is the Mongo Schema that creates an instance of the class and holds new objects that will be used tjroughout the code base.
 #### `app.js`
-    * This holds the functionality of each of the commands
+    * This holds the functionality of each of the commands and all of the helper functions connected with the base functions. 
 #### `outputParser.js`
-    * This 
+    * This formats the output to the console, separates the `@` from the tags, and adds in the colors that you will see as you use this package.
 
-##### Exported Values and Methods
 ### Dependencies
+* Dotenv
+* Superagent
 
 #### Running the app
 * Start by downloading the npm package: `npm i -g atnote`
@@ -67,6 +68,13 @@ This was a npm package that was created to help users take notes while they are 
 * How do you run tests?
     * run the command `npm test` in your terminal 
 * What assertions were made?
-    *
+    * timeStamp functon
+        * check to see if it would return the current date and that it would match the required format
+    * argvToString function
+        * check to see if it would return a string from an array 
+        * check if it would remove the `@` from each index in the array
+        * return the string without the `@`
+    * addTextToSet fucntion
+        * check to see if it would return an object with the `note` property
 * What assertions need to be / should be made?
-    *
+    * To test all of the promises
