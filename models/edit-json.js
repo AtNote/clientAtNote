@@ -27,7 +27,7 @@ function writeFile(newSet) {
         return str;
     }
 
-    fs.writeFile('./models/stash.js', buffAppend(writeContent), function (err) {
+    fs.writeFile(`${__dirname}/stash.js`, buffAppend(writeContent), function (err) {
 
         if (err) throw err;
     })
