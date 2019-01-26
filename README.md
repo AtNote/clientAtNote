@@ -3,7 +3,7 @@
 ### Authors & Acknowledgements: Siobhan Niess, Jonathan DiQuattro, Brent Woodward, and Jacob Anderson
 
 ### About the AtNote
-This was a npm package that was created to help users take notes while they are in their termial with ease. Allows users to multitask between note taking and writing code in a non-intrustive process. This si also customizable for each user.
+This was a npm package that was created to help users take notes while they are in their termial with ease. Allows users to multitask between note taking and writing code in a non-intrustive process. This is also customizable for each user.
 
 ### Download & Installation
 * `npm i -g atnote`
