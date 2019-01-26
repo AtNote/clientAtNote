@@ -9,7 +9,7 @@ This was a npm package that was created to help users take notes while they are 
 * `npm i -g atnote`
 
 ### Features
-* `@note` -This is going to the first command that you are going to run in your terminal after oyu have successfully downloaded the npm package.
+* `@note` -This is going to the first command that you are going to run in your terminal after you have successfully downloaded the npm package.
 * `@note @new 'your note'` -This is going to be the command that you are going to runin your terminal when you want to create a new note and have it saved.
 * `@note @showall` -This is the command that you are going to want to run in your terminal when you are wanting too view all of the notes that you have saved.
 * `@note @showlast` -This is the command that you are going to want to run in your terminal when you are wanting to view the last note that you have saved.
